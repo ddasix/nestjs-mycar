@@ -13,7 +13,11 @@ describe('UsersController', () => {
   beforeEach(async () => {
     fakeUsersService = {
       findOne: (id: number) => {
-        return Promise.resolve({ id, email: 'test@test.com', password: '123123' } as User)
+        return Promise.resolve({
+          id,
+          email: 'test@test.com',
+          password: '123123',
+        } as User);
       },
       findAllByEmail: (email: string) => {
         return Promise.resolve([
@@ -44,13 +48,13 @@ describe('UsersController', () => {
       providers: [
         {
           provide: UsersService,
-          useValue: fakeUsersService
+          useValue: fakeUsersService,
         },
         {
           provide: AuthService,
-          useValue: fakeAuthService
-        }
-      ]
+          useValue: fakeAuthService,
+        },
+      ],
     }).compile();
 
     controller = module.get<UsersController>(UsersController);
@@ -74,12 +78,17 @@ describe('UsersController', () => {
   it('없는 사용자 ID를 이용하여 사용자찾기 시 테스트', async () => {
     fakeUsersService.findOne = () => null;
 
-    await expect(controller.findOneById('1')).rejects.toThrow(NotFoundException);
+    await expect(controller.findOneById('1')).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('로그인 후 세션 업데이트 및 사용자 반환 테스트', async () => {
-    const session = {userId: -1};
-    const user = await controller.signin({ email: 'test@test.com', password: 'mypassword'}, session);
+    const session = { userId: -1 };
+    const user = await controller.signin(
+      { email: 'test@test.com', password: 'mypassword' },
+      session,
+    );
 
     expect(user.id).toEqual(1);
     expect(session.userId).toEqual(1);
