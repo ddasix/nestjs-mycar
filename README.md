@@ -58,13 +58,24 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## 오류
+## 배포
+```bash
+# 빌드
+$ npm run build
+
+# 실행
+$ NODE_ENV=production node ./build/src/index.js
+
+# nodemon 설치하여 계속실행으로 하면 될듯..
+```
+
+## 학습 중 오류 해결
 ### e2e테스트 시 database is locked 발생
 ```bash
 [Nest] 19476  - 2024. 04. 09. 오후 4:21:12   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (1)...
 QueryFailedError: SQLITE_BUSY: database is locked
 ```
-package.json에 `maxWorkers=1`추가
+`package.json`에 `maxWorkers=1`추가
 ```json
 {
   ...
